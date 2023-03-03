@@ -70,7 +70,7 @@ const addNewBook = (request, h) => {
   return h.response({
     status: 'error',
     message: 'Buku Gagal ditambahkan',
-  });
+  }).code(500);
 };
 
 // Function Get All Book
