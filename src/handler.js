@@ -106,9 +106,10 @@ const getBookById = (request, h) => {
   return h.response({
     status: 'fail',
     message: 'Buku tidak ditemukan',
-  }).code(400);
+  }).code(404);
 };
 
+// Function Edit Book by Id
 const editBookById = (request, h) => {
   const { bookId } = request.params;
 
@@ -141,7 +142,7 @@ const editBookById = (request, h) => {
   }
 
   const editedBookIndex = books.findIndex((book) => book.id === bookId);
-  if (editedBookIndex >= 0) {
+  if (editedBookIndex !== -1) {
     const updatedAt = new Date().toISOString();
     const finished = pageCount === readPage;
     books[editedBookIndex] = {
@@ -171,6 +172,25 @@ const editBookById = (request, h) => {
     message: 'Gagal memperbarui buku. Id tidak ditemukan',
   }).code(404);
 };
+
+// Function Delete Book by Id
+const deleteBookById = (request, h) => {
+  const { bookId } = request.params;
+
+  const index = books.findIndex((book) => book.id === bookId);
+  if (index !== -1) {
+    books.splice(index, 1);
+    return h.response({
+      status: 'success',
+      message: 'Buku berhasil dihapus',
+    }).code(200);
+  }
+
+  return h.response({
+    status: 'fail',
+    message: 'Buku gagal dihapus. Id tidak ditemukan',
+  }).code(404);
+};
 module.exports = {
-  addNewBook, getAllBooks, getBookById, editBookById,
+  addNewBook, getAllBooks, getBookById, editBookById, deleteBookById,
 };
