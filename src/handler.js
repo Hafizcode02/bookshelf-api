@@ -75,16 +75,53 @@ const addNewBook = (request, h) => {
 
 // Function Get All Book
 const getAllBooks = (request, h) => {
-  const allBooks = books.map((book) => ({
-    id: book.id,
-    name: book.name,
-    publisher: book.publisher,
-  }));
+  const { name, reading, finished } = request.query;
+
+  if (!name && !reading && !finished) {
+    const allBooks = books.map((book) => ({
+      id: book.id,
+      name: book.name,
+      publisher: book.publisher,
+    }));
+
+    return h.response({
+      status: 'success',
+      data: {
+        books: allBooks,
+      },
+    }).code(200);
+  }
+
+  const filteredBooks = books.filter(
+    (book) => (name ? book.name.toLowerCase().includes(name.toLowerCase()) : book),
+  ).filter(
+    (book) => {
+      if (reading && (reading === '0' || reading === '1')) {
+        return reading === '0' ? book.reading === false : book.reading === true;
+      }
+      return book;
+    },
+  ).filter(
+    (book) => {
+      if (finished && (finished === '0' || finished === '1')) {
+        return finished === '0' ? book.finished === false : book.finished === true;
+      }
+      return book;
+    },
+  );
+
+  const populateBooks = filteredBooks.map(
+    (book) => ({
+      id: book.id,
+      name: book.name,
+      publisher: book.publisher,
+    }),
+  );
 
   return h.response({
     status: 'success',
     data: {
-      books: allBooks,
+      books: populateBooks,
     },
   }).code(200);
 };
