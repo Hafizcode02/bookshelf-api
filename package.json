@@ -1,7 +1,7 @@
 {
   "name": "bookshelf-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "submission dicoding backend untuk pemula",
   "main": "index.js",
   "scripts": {
     "start": "SET NODE_ENV=production && node ./src/server.js",
@@ -9,7 +9,7 @@
     "lint": "eslint ./src --fix"
   },
   "keywords": [],
-  "author": "",
+  "author": "Hafiz Caniago",
   "license": "ISC",
   "dependencies": {
     "@hapi/hapi": "^21.3.0",
